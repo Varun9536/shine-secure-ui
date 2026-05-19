@@ -1,0 +1,126 @@
+.shell {
+  min-height: calc(100vh - 230px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(340px, 0.55fr);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: center;
+  padding: clamp(36px, 7vw, 86px) clamp(18px, 5vw, 64px);
+  background:
+    linear-gradient(115deg, rgba(6, 21, 18, 0.91), rgba(11, 43, 36, 0.74)),
+    url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1700&q=80') center/cover;
+}
+
+.copy {
+  color: var(--white);
+}
+
+.copy p:first-child {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.copy h1 {
+  max-width: 680px;
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(38px, 7vw, 78px);
+  line-height: 1;
+}
+
+.copy p:last-child {
+  max-width: 560px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.panel {
+  display: grid;
+  gap: 18px;
+  padding: clamp(20px, 4vw, 32px);
+  background: var(--surface);
+  border: 1px solid var(--accent-line);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.panel h2 {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 30px;
+}
+
+.panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 13px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.panel button {
+  min-height: 48px;
+  border: 1px solid var(--gold);
+  border-radius: 6px;
+  background: var(--gold);
+  color: var(--black);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.panel button:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
+.note {
+  padding: 12px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--gold-dark);
+  font-size: 13px;
+}
+
+.error {
+  padding: 12px;
+  border: 1px solid rgba(160, 35, 35, 0.22);
+  border-radius: 6px;
+  background: rgba(160, 35, 35, 0.08);
+  color: #9b2424;
+  font-size: 13px;
+}
+
+@media (max-width: 860px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .shell {
+    padding-inline: 14px;
+  }
+}
