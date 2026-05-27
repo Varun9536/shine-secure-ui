@@ -95,9 +95,6 @@ export async function createWhatsappOrder(
       ...customer,
       items: items.map(({ product, quantity }) => ({
         product: product._id,
-        title: product.title,
-        sku: product.sku,
-        price: product.price,
         quantity
       }))
     })

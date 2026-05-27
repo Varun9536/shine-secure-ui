@@ -58,6 +58,7 @@ export function OrderButton({ product }: { product: Product }) {
       <InquiryDetailsModal
         open={modalOpen}
         loading={loading}
+        items={[{ product, quantity: 1 }]}
         onClose={() => setModalOpen(false)}
         onSubmit={(details) => void orderNow(details)}
       />

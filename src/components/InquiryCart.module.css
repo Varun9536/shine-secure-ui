@@ -93,6 +93,39 @@
   font-size: 13px;
 }
 
+.quantityControls {
+  display: inline-grid;
+  grid-template-columns: 32px 34px 32px;
+  align-items: center;
+  min-height: 32px;
+  margin-top: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.quantityControls button {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background: var(--white);
+}
+
+.quantityControls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.quantityControls span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  color: var(--ink);
+  font-weight: 700;
+}
+
 .error {
   margin: 0;
   padding: 10px 12px;

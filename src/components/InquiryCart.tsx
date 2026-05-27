@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, Minus, Plus, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createWhatsappOrder } from '@/lib/api';
 import type { Product } from '@/lib/types';
@@ -42,6 +42,16 @@ export function InquiryCart() {
     const next = items.filter((item) => item.product._id !== productId);
     localStorage.setItem('shine-secure-cart', JSON.stringify(next));
     setItems(next);
+    window.dispatchEvent(new Event('shine-secure-cart-updated'));
+  }
+
+  function updateQuantity(productId: string, quantity: number) {
+    const next = items
+      .map((item) => item.product._id === productId ? { ...item, quantity: Math.min(Math.max(quantity, 1), item.product.stock || 1) } : item)
+      .filter((item) => item.quantity > 0);
+    localStorage.setItem('shine-secure-cart', JSON.stringify(next));
+    setItems(next);
+    window.dispatchEvent(new Event('shine-secure-cart-updated'));
   }
 
   async function send(details?: { customerName?: string; customerPhone?: string; customerAddress?: string; message?: string }) {
@@ -83,7 +93,16 @@ export function InquiryCart() {
             <article key={item.product._id}>
               <div>
                 <strong>{item.product.title}</strong>
-                <span>{item.product.sku} - Rs. {item.product.price.toLocaleString('en-IN')} - Qty {item.quantity}</span>
+                <span>{item.product.sku} - Rs. {item.product.price.toLocaleString('en-IN')}</span>
+                <div className={styles.quantityControls} aria-label={`Quantity for ${item.product.title}`}>
+                  <button type="button" onClick={() => updateQuantity(item.product._id, item.quantity - 1)} disabled={item.quantity <= 1} aria-label={`Decrease ${item.product.title} quantity`}>
+                    <Minus size={14} />
+                  </button>
+                  <span>{item.quantity}</span>
+                  <button type="button" onClick={() => updateQuantity(item.product._id, item.quantity + 1)} disabled={item.quantity >= item.product.stock} aria-label={`Increase ${item.product.title} quantity`}>
+                    <Plus size={14} />
+                  </button>
+                </div>
               </div>
               <button onClick={() => remove(item.product._id)} aria-label={`Remove ${item.product.title}`}>
                 <X size={15} />
@@ -98,7 +117,7 @@ export function InquiryCart() {
           {loading ? 'Opening WhatsApp' : 'Send Inquiry'}
         </button>
       </aside>
-      <InquiryDetailsModal open={modalOpen} loading={loading} onClose={() => setModalOpen(false)} onSubmit={(details) => void send(details)} />
+      <InquiryDetailsModal open={modalOpen} loading={loading} items={items} onClose={() => setModalOpen(false)} onSubmit={(details) => void send(details)} />
     </div>
   );
 }

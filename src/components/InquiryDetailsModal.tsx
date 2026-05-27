@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import { X } from 'lucide-react';
+import type { Product } from '@/lib/types';
 import styles from './InquiryDetailsModal.module.css';
 
 type Details = {
@@ -14,11 +15,13 @@ type Details = {
 export function InquiryDetailsModal({
   open,
   loading,
+  items,
   onClose,
   onSubmit,
 }: {
   open: boolean;
   loading: boolean;
+  items: Array<{ product: Product; quantity: number }>;
   onClose: () => void;
   onSubmit: (details: Details) => void;
 }) {
@@ -28,6 +31,7 @@ export function InquiryDetailsModal({
   const [message, setMessage] = useState('');
 
   if (!open) return null;
+  const total = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,6 +46,18 @@ export function InquiryDetailsModal({
           <button type="button" onClick={onClose} aria-label="Close"><X size={18} /></button>
         </div>
         <p>Add your details before WhatsApp opens.</p>
+        <div className={styles.summary} aria-label="Inquiry summary">
+          {items.map((item) => (
+            <div key={item.product._id}>
+              <span>{item.product.title}</span>
+              <strong>Qty {item.quantity} - Rs. {(item.product.price * item.quantity).toLocaleString('en-IN')}</strong>
+            </div>
+          ))}
+          <div>
+            <span>Estimated total</span>
+            <strong>Rs. {total.toLocaleString('en-IN')}</strong>
+          </div>
+        </div>
         <label>
           Name
           <input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" required />

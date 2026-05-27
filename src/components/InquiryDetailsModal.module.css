@@ -47,6 +47,38 @@
   color: var(--muted);
 }
 
+.summary {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.summary div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.summary div:last-child {
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.summary span {
+  min-width: 0;
+  color: var(--muted);
+}
+
+.summary strong {
+  flex: 0 0 auto;
+  font-size: 13px;
+}
+
 .modal label {
   display: grid;
   gap: 7px;
