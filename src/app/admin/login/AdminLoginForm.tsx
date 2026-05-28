@@ -7,7 +7,7 @@ import { adminApiBase } from '@/lib/admin-api';
 
 export function AdminLoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState('admin@shinesecure.local');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ export function AdminLoginForm() {
           autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="admin@shinesecure.local"
+          placeholder="admin@example.com"
           required
         />
       </div>
