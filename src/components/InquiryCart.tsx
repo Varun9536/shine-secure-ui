@@ -38,6 +38,13 @@ export function InquiryCart() {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [drawerOpen]);
+
   function remove(productId: string) {
     const next = items.filter((item) => item.product._id !== productId);
     localStorage.setItem('shine-secure-cart', JSON.stringify(next));

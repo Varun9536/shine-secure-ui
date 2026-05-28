@@ -10,6 +10,7 @@
 }
 
 .adminBrand {
+  flex: 0 0 auto;
   color: var(--gold);
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 20px;
@@ -21,6 +22,7 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 8px;
+  min-width: 0;
 }
 
 .adminNav a,
@@ -544,12 +546,28 @@
 
 @media (max-width: 920px) {
   .adminBar {
-    align-items: flex-start;
     flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding-inline: 16px;
   }
 
   .adminNav {
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .adminNav a,
+  .adminNav button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    white-space: nowrap;
   }
 
   .grid {
@@ -558,6 +576,33 @@
 }
 
 @media (max-width: 560px) {
+  .adminBar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    padding-block: 12px;
+  }
+
+  .adminBrand {
+    font-size: 18px;
+  }
+
+  .adminNav {
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  .adminNav a,
+  .adminNav button {
+    min-height: 38px;
+    padding-inline: 11px;
+    font-size: 12px;
+  }
+
+  .shell {
+    padding-block: 24px;
+  }
+
   .header,
   .row {
     grid-template-columns: 1fr;

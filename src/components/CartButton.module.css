@@ -1,4 +1,5 @@
 .button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -32,12 +33,18 @@
   font-weight: 700;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 760px) {
   .button {
-    padding: 0 10px;
+    width: 38px;
+    padding: 0;
   }
 
   .label {
     display: none;
+  }
+
+  .count {
+    position: absolute;
+    transform: translate(12px, -12px);
   }
 }

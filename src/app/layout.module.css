@@ -85,6 +85,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-self: end;
 }
 
 .tools a {
@@ -118,7 +119,7 @@
 .drawerOverlay {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  z-index: 50;
   pointer-events: none;
   background: rgba(5, 14, 12, 0);
   opacity: 0;
@@ -129,19 +130,22 @@
 
 .drawer {
   position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 41;
+  inset: 0;
+  z-index: 51;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  width: min(82vw, 340px);
+  width: 100dvw;
   height: 100dvh;
   padding: 18px;
   background: linear-gradient(180deg, var(--charcoal), var(--black));
-  border-left: 1px solid var(--accent-line);
-  box-shadow: -18px 0 44px rgba(0, 0, 0, 0.28);
-  transform: translateX(104%);
-  transition: transform 220ms ease;
+  border-left: 0;
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity 180ms ease,
+    visibility 180ms ease;
 }
 
 .drawerOpen.drawerOverlay {
@@ -151,7 +155,9 @@
 }
 
 .drawerOpen.drawer {
-  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .drawerHeader {
@@ -226,9 +232,9 @@
   color: rgba(255, 255, 255, 0.78);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   .bar {
-    grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto;
   }
 
   .nav {
@@ -238,6 +244,7 @@
   .mobileNav {
     display: block;
   }
+
 }
 
 @media (max-width: 640px) {
@@ -251,6 +258,9 @@
   }
 
   .brand {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 24px;
   }
 

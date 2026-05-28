@@ -22,10 +22,14 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top left, rgba(199, 164, 90, 0.18), transparent 32rem),
     radial-gradient(circle at bottom right, rgba(11, 83, 68, 0.12), transparent 34rem),
