@@ -17,6 +17,7 @@ ENV NEXT_PUBLIC_GA_ID=$NEXT_PUBLIC_GA_ID
 ENV NEXT_PUBLIC_META_PIXEL_ID=$NEXT_PUBLIC_META_PIXEL_ID
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN mkdir -p public
 RUN npm run build
 
 FROM node:24-alpine AS prod-deps
