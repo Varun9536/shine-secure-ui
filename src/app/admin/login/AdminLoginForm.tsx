@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import styles from './page.module.css';
-import { adminApiBase } from '@/lib/admin-api';
+import { adminApiBase, setCsrfToken } from '@/lib/admin-api';
 
 export function AdminLoginForm() {
   const router = useRouter();
@@ -29,6 +29,8 @@ export function AdminLoginForm() {
         const body = await response.json().catch(() => null);
         throw new Error(body?.message ?? 'Login failed. Check email and password.');
       }
+      const body = await response.json().catch(() => null);
+      setCsrfToken(body?.csrfToken);
 
       router.push('/admin/dashboard');
       router.refresh();

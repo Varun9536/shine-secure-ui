@@ -2,10 +2,21 @@ export const adminApiBase = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost
 
 export function getCsrfToken() {
   if (typeof document === 'undefined') return '';
-  const cookie = document.cookie
+  const cookieToken = document.cookie
     .split('; ')
     .find((item) => item.startsWith('csrf_token='));
-  return cookie ? decodeURIComponent(cookie.split('=').slice(1).join('=')) : '';
+  if (cookieToken) return decodeURIComponent(cookieToken.split('=').slice(1).join('='));
+  return window.localStorage.getItem('csrf_token') ?? '';
+}
+
+export function setCsrfToken(token?: string) {
+  if (typeof window === 'undefined' || !token) return;
+  window.localStorage.setItem('csrf_token', token);
+}
+
+export function clearCsrfToken() {
+  if (typeof window === 'undefined') return;
+  window.localStorage.removeItem('csrf_token');
 }
 
 export async function adminFetch(input: string, init: RequestInit = {}) {
@@ -42,6 +53,8 @@ export async function adminFetch(input: string, init: RequestInit = {}) {
   });
 
   if (!refreshed.ok) return response;
+  const refreshBody = await refreshed.json().catch(() => null);
+  setCsrfToken(refreshBody?.csrfToken);
   response = await request();
   return response;
 }

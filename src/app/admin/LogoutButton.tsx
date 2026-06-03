@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { adminApiBase, getCsrfToken } from '@/lib/admin-api';
+import { adminApiBase, clearCsrfToken, getCsrfToken } from '@/lib/admin-api';
 import styles from './admin.module.css';
 
 export function LogoutButton() {
@@ -13,6 +13,7 @@ export function LogoutButton() {
       credentials: 'include',
       headers: { 'x-csrf-token': getCsrfToken() },
     }).catch(() => null);
+    clearCsrfToken();
     router.push('/admin/login');
     router.refresh();
   }
