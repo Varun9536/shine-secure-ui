@@ -43,18 +43,30 @@ export async function adminFetch(input: string, init: RequestInit = {}) {
     headers: buildHeaders(),
   });
 
+  const refresh = async () => {
+    const refreshed = await fetch(`${adminApiBase}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'x-csrf-token': getCsrfToken() },
+    });
+
+    if (!refreshed.ok) return false;
+    const refreshBody = await refreshed.json().catch(() => null);
+    setCsrfToken(refreshBody?.csrfToken);
+    return true;
+  };
+
   let response = await request();
-  if (response.status !== 401) return response;
+  if (response.status === 401) {
+    if (!(await refresh())) return response;
+    return request();
+  }
 
-  const refreshed = await fetch(`${adminApiBase}/auth/refresh`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'x-csrf-token': getCsrfToken() },
-  });
-
-  if (!refreshed.ok) return response;
-  const refreshBody = await refreshed.json().catch(() => null);
-  setCsrfToken(refreshBody?.csrfToken);
-  response = await request();
+  if (response.status === 403) {
+    const responseBody = await response.clone().json().catch(() => null);
+    if (responseBody?.message === 'Invalid CSRF token' && await refresh()) {
+      response = await request();
+    }
+  }
   return response;
 }
