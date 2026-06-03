@@ -3,16 +3,19 @@ import { notFound } from 'next/navigation';
 import { OrderButton } from '@/components/OrderButton';
 import { ProductCard } from '@/components/ProductCard';
 import { getProduct, getProducts } from '@/lib/api';
+import { absoluteUrl, pageMetadata, shortDescription } from '@/lib/seo';
 import styles from './page.module.css';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) return {};
-  return {
+  return pageMetadata({
     title: product.metaTitle ?? product.title,
-    description: product.metaDescription ?? product.description
-  };
+    description: shortDescription(product.metaDescription ?? product.description),
+    path: `/products/${product.slug}`,
+    image: product.images?.[0]?.url,
+  });
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,9 +29,32 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     : [{ url: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1200&q=80', alt: product.title }];
   const related = await getProducts(product.category?._id ? `?category=${product.category._id}&limit=4` : '?trending=true&limit=4');
   const relatedItems = related.items.filter((item) => item._id !== product._id).slice(0, 3);
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: shortDescription(product.description),
+    sku: product.sku,
+    image: images.map((image) => absoluteUrl(image.url)),
+    brand: {
+      '@type': 'Brand',
+      name: 'Shine Secure',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: absoluteUrl(`/products/${product.slug}`),
+      priceCurrency: 'INR',
+      price: product.price,
+      availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+    },
+  };
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <div className={styles.detail}>
         <div>
           <div className={styles.imageWrap} aria-label={`${product.title} images`}>

@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getGalleryItems } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from '../page.module.css';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Event Gallery',
-  description: 'Shine Secure event jewellery gallery.'
-};
+  description: 'Browse Shine Secure event jewellery gallery images, styling highlights, and collection showcases.',
+  path: '/gallery',
+});
 
 export default async function GalleryPage() {
   const items = await getGalleryItems();

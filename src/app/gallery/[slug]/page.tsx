@@ -2,12 +2,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getGalleryItem } from '@/lib/api';
+import { pageMetadata, shortDescription } from '@/lib/seo';
 import styles from '../../page.module.css';
 
-export const metadata = {
-  title: 'Gallery Album',
-  description: 'Browse Shine Secure jewellery gallery album images.'
-};
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const album = await getGalleryItem(slug);
+  return pageMetadata({
+    title: album?.title ?? 'Gallery Album',
+    description: shortDescription(album?.description, 'Browse Shine Secure jewellery gallery album images.'),
+    path: `/gallery/${slug}`,
+    image: album?.imageUrl ?? album?.images?.[0]?.url,
+  });
+}
 
 export default async function GalleryAlbumPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -1,10 +1,12 @@
 import { getSettings } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from '../page.module.css';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Help',
-  description: 'Help and FAQs for ordering Shine Secure jewellery.'
-};
+  description: 'Help and ordering information for Shine Secure artificial jewellery and WhatsApp inquiries.',
+  path: '/help',
+});
 
 export default async function HelpPage() {
   const settings = await getSettings();

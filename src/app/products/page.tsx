@@ -1,14 +1,16 @@
 import { ProductCard } from '@/components/ProductCard';
 import { getCategories, getProducts } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from '../page.module.css';
 import { ProductFilters } from './ProductFilters';
 import productStyles from './products.module.css';
 import { Pagination } from './Pagination';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Products',
-  description: 'Browse Shine Secure artificial jewellery products.'
-};
+  description: 'Browse Shine Secure artificial jewellery products, including necklaces, earrings, rings, bangles, and event-ready styles.',
+  path: '/products',
+});
 
 export default async function ProductsPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const params = await searchParams;

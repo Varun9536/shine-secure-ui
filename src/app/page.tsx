@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
 import { getBanners, getProducts, getSettings } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from './page.module.css';
+
+export const metadata = pageMetadata({
+  title: 'Artificial Jewellery',
+  description: 'Premium artificial jewellery with anti-tarnish styles, curated product collections, gallery showcases, and WhatsApp ordering.',
+  path: '/',
+});
 
 export default async function HomePage() {
   const featured = await getProducts('?featured=true&limit=4');

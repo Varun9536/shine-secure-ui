@@ -1,10 +1,12 @@
 import { getSettings } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from '../page.module.css';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'About',
-  description: 'About Shine Secure, our founders, team, mission, and jewellery quality.'
-};
+  description: 'About Shine Secure, our founders, team, mission, and artificial jewellery quality.',
+  path: '/about',
+});
 
 export default async function AboutPage() {
   const settings = await getSettings();

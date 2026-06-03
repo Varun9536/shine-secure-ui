@@ -11,20 +11,25 @@ export function getCsrfToken() {
 export async function adminFetch(input: string, init: RequestInit = {}) {
   const method = (init.method ?? 'GET').toUpperCase();
   const needsCsrf = !['GET', 'HEAD', 'OPTIONS'].includes(method);
-  const headers = new Headers(init.headers);
 
-  if (!(init.body instanceof FormData) && !headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json');
-  }
+  const buildHeaders = () => {
+    const headers = new Headers(init.headers);
 
-  if (needsCsrf) {
-    headers.set('x-csrf-token', getCsrfToken());
-  }
+    if (!(init.body instanceof FormData) && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+
+    if (needsCsrf) {
+      headers.set('x-csrf-token', getCsrfToken());
+    }
+
+    return headers;
+  };
 
   const request = () => fetch(`${adminApiBase}${input}`, {
     ...init,
     credentials: 'include',
-    headers,
+    headers: buildHeaders(),
   });
 
   let response = await request();

@@ -6,6 +6,7 @@ import { AdminHeaderLinks } from '@/components/AdminHeaderLinks';
 import { CartButton } from '@/components/CartButton';
 import { InquiryCart } from '@/components/InquiryCart';
 import { MobileNav } from '@/components/MobileNav';
+import { absoluteUrl, siteUrl } from '@/lib/seo';
 import './globals.css';
 import styles from './layout.module.css';
 
@@ -15,15 +16,40 @@ export const metadata: Metadata = {
     template: '%s | Shine Secure'
   },
   description: 'Premium artificial jewellery with WhatsApp ordering.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000')
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: absoluteUrl('/'),
+  },
+  openGraph: {
+    title: 'Shine Secure | Artificial Jewellery',
+    description: 'Premium artificial jewellery with WhatsApp ordering.',
+    url: absoluteUrl('/'),
+    siteName: 'Shine Secure',
+    type: 'website',
+  },
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const settings = await getSettings();
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Store',
+    name: settings.businessName ?? 'Shine Secure',
+    url: absoluteUrl('/'),
+    description: settings.tagline ?? 'Premium artificial jewellery with WhatsApp ordering.',
+    email: settings.email,
+    telephone: settings.phone,
+    address: settings.address,
+    sameAs: settings.instagramUrl ? [settings.instagramUrl] : undefined,
+  };
 
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <header className={styles.header}>
           <div className={styles.topLine}>
             <span>{settings.tagline ?? 'Premium artificial jewellery'}</span>

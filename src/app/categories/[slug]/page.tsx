@@ -1,14 +1,16 @@
 import { ProductCard } from '@/components/ProductCard';
 import { getCategory, getProducts } from '@/lib/api';
+import { pageMetadata, shortDescription } from '@/lib/seo';
 import styles from '../../page.module.css';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const category = await getCategory(slug);
-  return {
+  return pageMetadata({
     title: category?.metaTitle ?? category?.name ?? 'Category',
-    description: category?.metaDescription ?? category?.description ?? 'Browse Shine Secure jewellery by category.',
-  };
+    description: shortDescription(category?.metaDescription ?? category?.description, 'Browse Shine Secure jewellery by category.'),
+    path: `/categories/${slug}`,
+  });
 }
 
 export default async function CategoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {

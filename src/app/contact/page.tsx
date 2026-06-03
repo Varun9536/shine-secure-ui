@@ -1,10 +1,12 @@
 import { getSettings } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from '../page.module.css';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Contact',
-  description: 'Contact Shine Secure for jewellery orders and support.'
-};
+  description: 'Contact Shine Secure for artificial jewellery orders, WhatsApp inquiries, and support.',
+  path: '/contact',
+});
 
 export default async function ContactPage() {
   const settings = await getSettings();

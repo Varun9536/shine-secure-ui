@@ -9,6 +9,8 @@ export type Category = {
   name: string;
   slug: string;
   description?: string;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 export type Product = {
@@ -28,6 +30,7 @@ export type Product = {
   isTrending: boolean;
   metaTitle?: string;
   metaDescription?: string;
+  canonicalUrl?: string;
 };
 
 export type ProductListResponse = {

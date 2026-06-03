@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import { getCategories } from '@/lib/api';
+import { pageMetadata } from '@/lib/seo';
 import styles from '../page.module.css';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Categories',
-  description: 'Browse Shine Secure jewellery categories.'
-};
+  description: 'Browse Shine Secure jewellery categories and find curated artificial jewellery by style.',
+  path: '/categories',
+});
 
 export default async function CategoriesPage() {
   const categories = await getCategories();
