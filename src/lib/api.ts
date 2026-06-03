@@ -87,20 +87,29 @@ export async function createWhatsappOrder(
   items: Array<{ product: Product; quantity: number }>,
   customer?: { customerName?: string; customerPhone?: string; customerAddress?: string; message?: string },
 ) {
+  const validItems = items.filter(({ product }) => /^[a-f\d]{24}$/i.test(product._id));
+  if (!validItems.length) {
+    throw new Error('Cart has old or invalid products. Please remove them and add products again.');
+  }
+
   const response = await fetch(`${apiBase}/orders/whatsapp`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       sourcePage: typeof window !== 'undefined' ? window.location.href : undefined,
       ...customer,
-      items: items.map(({ product, quantity }) => ({
+      items: validItems.map(({ product, quantity }) => ({
         product: product._id,
         quantity
       }))
     })
   });
 
-  if (!response.ok) throw new Error('Could not create WhatsApp inquiry');
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    const message = Array.isArray(body?.message) ? body.message.join(', ') : body?.message;
+    throw new Error(message ?? 'Could not create WhatsApp inquiry');
+  }
   return response.json() as Promise<{ whatsappUrl: string }>;
 }
 

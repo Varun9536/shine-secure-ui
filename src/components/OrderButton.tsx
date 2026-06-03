@@ -18,8 +18,8 @@ export function OrderButton({ product }: { product: Product }) {
     try {
       const inquiry = await createWhatsappOrder([{ product, quantity: 1 }], details);
       window.location.href = inquiry.whatsappUrl;
-    } catch {
-      setError('Could not open WhatsApp inquiry. Please try again or contact us directly.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not open WhatsApp inquiry. Please try again or contact us directly.');
     } finally {
       setLoading(false);
     }

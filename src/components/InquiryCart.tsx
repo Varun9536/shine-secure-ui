@@ -69,8 +69,8 @@ export function InquiryCart() {
       localStorage.removeItem('shine-secure-cart');
       setItems([]);
       window.location.href = inquiry.whatsappUrl;
-    } catch {
-      setError('Could not send inquiry. Please try again or contact us directly on WhatsApp.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not send inquiry. Please try again or contact us directly on WhatsApp.');
     } finally {
       setLoading(false);
     }
